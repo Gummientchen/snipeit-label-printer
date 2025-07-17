@@ -15,11 +15,11 @@ except ImportError:
 # --- Default Layout Constants ---
 # These constants define the base layout. Offsets from config.py will be applied to these.
 BASE_MARGIN_MM = 3
-QR_CODE_MARGIN_FACTOR = 8 # Determines QR code size relative to label height and margins
+QR_CODE_MARGIN_FACTOR = 3 # Determines QR code size relative to label height and margins
 TEXT_FONT_FAMILY = "Helvetica"
-TEXT_FONT_SIZE_PT = 11
-TEXT_LINE_HEIGHT_MM = 5
-TEXT_ADDITIONAL_TOP_OFFSET_MM = 3 # Additional offset for the first line of text from the top margin
+TEXT_FONT_SIZE_PT = 9
+TEXT_LINE_HEIGHT_MM = 4
+TEXT_ADDITIONAL_TOP_OFFSET_MM = 2 # Additional offset for the first line of text from the top margin
 
 def _calculate_layout_parameters(label_width_cm, label_height_cm, selected_x_offset_mm, selected_y_offset_mm, scale_factor):
     """
@@ -50,6 +50,7 @@ def _calculate_layout_parameters(label_width_cm, label_height_cm, selected_x_off
     # QR Code layout (original logic)
     # QR size is calculated to fit within label height, considering (QR_CODE_MARGIN_FACTOR * margin_rl) total vertical margin space for QR.
     qr_size_rl = label_height_rl - (QR_CODE_MARGIN_FACTOR * margin_rl)
+
     # Original X for QR was margin_orig - margin_orig = 0. We'll use margin_rl as a base if needed, but original was 0.
     qr_x_base_rl = 0 # qr_x_orig was effectively 0 (margin_orig - margin_orig)
     # Original Y for QR bottom-left corner, placed near top.

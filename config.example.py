@@ -4,8 +4,8 @@ SNIPEIT_URL = "YOURSNIPEITURL"  # Replace with your Snipe-IT instance URL (e.g.,
 SNIPEIT_API_KEY = "YOURSNIPEITKEY"  # Replace with your Snipe-IT API Bearer Token
 
 # Label dimensions in centimeters
-LABEL_WIDTH_CM = 7.62
-LABEL_HEIGHT_CM = 5.08
+LABEL_WIDTH_CM = 7.0
+LABEL_HEIGHT_CM = 3.2
 
 # Name of the printer as it appears in your system's printer list
 PRINTER_NAME = "ZDesigner ZD420-300dpi ZPL"
@@ -27,9 +27,9 @@ GHOSTSCRIPT_PATH = r"C:\Program Files\gs\gs10.05.1\bin\gswin64c.exe" # CHANGE TH
 # You may need different offsets for different label sizes or printers.
 # Positive X shifts content to the RIGHT. Positive Y shifts content UP.
 
-PRINT_X_OFFSET_MM_NORMAL = 21  # X offset for Normal size (100%) labels
+PRINT_X_OFFSET_MM_NORMAL = 24  # X offset for Normal size (100%) labels
 PRINT_Y_OFFSET_MM_NORMAL = 0   # Y offset for Normal size (100%) labels
-PRINT_X_OFFSET_MM_SMALL = 21    # X offset for Small size (50%) labels. Adjust this if cut off on the left.
+PRINT_X_OFFSET_MM_SMALL = 24    # X offset for Small size (50%) labels. Adjust this if cut off on the left.
 PRINT_Y_OFFSET_MM_SMALL = 0    # Y offset for Small size (50%) labels. Adjust as needed.
 
 # --- Label Size Scaling ---
