@@ -319,6 +319,34 @@ def _process_asset_label_request(identifier, input_type='serial', scale_factor=1
     status_label_info = asset_details.get('status_label', {})
     _print_status(f"  Status: {status_label_info.get('name', 'N/A')}")
 
+    # Check if custom "Owner" field is set and use it instead of Asset Name in the printout
+    owner_value = None
+    custom_fields = asset_details.get('custom_fields')
+    if custom_fields and isinstance(custom_fields, dict):
+        # 1. Search by display name "Owner"
+        for key, field_data in custom_fields.items():
+            if key.strip().lower() == 'owner':
+                if isinstance(field_data, dict):
+                    val = field_data.get('value')
+                    if val is not None and str(val).strip():
+                        owner_value = str(val).strip()
+                        break
+        # 2. Search by internal field name starting with '_snipeit_owner_' or equal to '_snipeit_owner_8'
+        if not owner_value:
+            for key, field_data in custom_fields.items():
+                if isinstance(field_data, dict):
+                    field_name = field_data.get('field', '')
+                    if field_name.startswith('_snipeit_owner_') or field_name == '_snipeit_owner_8':
+                        val = field_data.get('value')
+                        if val is not None and str(val).strip():
+                            owner_value = str(val).strip()
+                            break
+
+    if owner_value:
+        _print_status(f"  Owner: {owner_value}")
+        _print_status(f"  -> Using Owner instead of Asset Name in the printout.")
+        asset_details['name'] = owner_value
+
     # Note: get_custom_field_value expects config.TARGET_CUSTOM_FIELD_API_NAME to be the *display name*.
     # This means config.TARGET_CUSTOM_FIELD_API_NAME should be set to "Klasse" (or similar),
     # not "_snipeit_klasse_3".
