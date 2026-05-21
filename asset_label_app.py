@@ -359,6 +359,7 @@ def _process_asset_label_request(identifier, input_type='serial', scale_factor=1
             selected_y_offset_mm,
             label_width_cm=config_loader.LABEL_WIDTH_CM,
             label_height_cm=config_loader.LABEL_HEIGHT_CM,
+            qr_code_down_offset_mm=config_loader.QR_CODE_DOWN_OFFSET_MM,
             verbose_output=config_loader.VERBOSE_OUTPUT
         )
 

@@ -13,7 +13,7 @@ TEXT_FONT_SIZE_PT = 9
 TEXT_LINE_HEIGHT_MM = 4
 TEXT_ADDITIONAL_TOP_OFFSET_MM = 2  # Additional offset for the first line of text from the top margin
 
-def _calculate_layout_parameters(label_width_cm, label_height_cm, selected_x_offset_mm, selected_y_offset_mm, scale_factor):
+def _calculate_layout_parameters(label_width_cm, label_height_cm, selected_x_offset_mm, selected_y_offset_mm, scale_factor, qr_code_down_offset_mm=0.0):
     """
     Calculates all necessary layout dimensions and coordinates in ReportLab units (points).
     The incoming label_width_cm, label_height_cm are already scaled.
@@ -25,6 +25,7 @@ def _calculate_layout_parameters(label_width_cm, label_height_cm, selected_x_off
     scaled_text_font_size_pt = TEXT_FONT_SIZE_PT * scale_factor
     scaled_text_line_height_mm = TEXT_LINE_HEIGHT_MM * scale_factor
     scaled_text_additional_top_offset_mm = TEXT_ADDITIONAL_TOP_OFFSET_MM * scale_factor
+    scaled_qr_code_down_offset_mm = qr_code_down_offset_mm * scale_factor
 
     margin_rl = scaled_base_margin_mm * mm
     # Base label dimensions
@@ -55,7 +56,7 @@ def _calculate_layout_parameters(label_width_cm, label_height_cm, selected_x_off
         "page_width": actual_pdf_page_width_rl,
         "page_height": actual_pdf_page_height_rl,
         "qr_x": qr_x_base_rl + eff_x_offset_rl,
-        "qr_y": qr_y_base_rl + eff_y_offset_rl,
+        "qr_y": qr_y_base_rl + eff_y_offset_rl - (scaled_qr_code_down_offset_mm * mm),
         "qr_size": qr_size_rl,
         "text_x_start": text_x_start_base_rl + eff_x_offset_rl,
         "text_y_start": text_y_start_base_rl + eff_y_offset_rl,
@@ -134,7 +135,7 @@ def _draw_asset_details_on_canvas(c, asset_details, custom_field_display_name, c
     except Exception as e:
         raise RuntimeError(f"Error rendering asset details text on PDF. Detail: {e}")
 
-def create_label_pdf(asset_details, qr_image_path, output_pdf_path, custom_field_display_name, custom_field_actual_value, scale_factor, x_offset_mm, y_offset_mm, label_width_cm=7.0, label_height_cm=3.2, verbose_output=False):
+def create_label_pdf(asset_details, qr_image_path, output_pdf_path, custom_field_display_name, custom_field_actual_value, scale_factor, x_offset_mm, y_offset_mm, label_width_cm=7.0, label_height_cm=3.2, qr_code_down_offset_mm=0.0, verbose_output=False):
     """
     Creates a PDF label with a QR code and asset information.
 
@@ -149,6 +150,7 @@ def create_label_pdf(asset_details, qr_image_path, output_pdf_path, custom_field
         y_offset_mm (float): The selected Y offset in mm.
         label_width_cm (float): Width of the label in cm (default: 7.0).
         label_height_cm (float): Height of the label in cm (default: 3.2).
+        qr_code_down_offset_mm (float): Amount of mm to push the QR code down (default: 0.0).
         verbose_output (bool): Set to True for verbose output (default: False).
 
     Raises:
@@ -167,7 +169,8 @@ def create_label_pdf(asset_details, qr_image_path, output_pdf_path, custom_field
         scaled_label_height_cm,
         x_offset_mm,
         y_offset_mm,
-        scale_factor
+        scale_factor,
+        qr_code_down_offset_mm
     )
 
     try:
